@@ -1,0 +1,33 @@
+import numpy as np
+from scipy.stats import entropy
+
+def calculate_entropy(data):
+    """计算熵 H(X)"""
+    probs = data.value_counts(normalize=True)
+    return -entropy(probs)
+
+def calculate_joint_entropy(x, y):
+    """计算联合熵 H(X, Y)"""
+    joint_data = pd.DataFrame({'X': x, 'Y': y})
+    joint_probs = joint_data.value_counts(normalize=True)
+    return -entropy(joint_probs)
+
+# 计算各个熵值
+H_X = calculate_entropy(X)
+H_Y = calculate_entropy(Y)
+H_XY = calculate_joint_entropy(X, Y)
+
+# 计算条件熵
+H_X_given_Y = H_XY - H_Y
+H_Y_given_X = H_XY - H_X
+
+# 计算互信息
+I_XY = H_X + H_Y - H_XY
+
+# 输出结果
+print(f'H(X): {H_X}')
+print(f'H(Y): {H_Y}')
+print(f'H(X, Y): {H_XY}')
+print(f'H(X|Y): {H_X_given_Y}')
+print(f'H(Y|X): {H_Y_given_X}')
+print(f'I(X; Y): {I_XY}')
